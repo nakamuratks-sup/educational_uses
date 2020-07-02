@@ -1,0 +1,4 @@
+@startuml
+[*] --> state1
+state1 --> [*]
+@enduml

@@ -1,0 +1,104 @@
+@startuml
+
+title 商品一覧表示
+
+actor 人間操作 as man
+boundary 画面表示 as disp
+control 自販機本体 as machine
+entity 金額管理 as coin
+entity 商品管理 as itemlist
+entity 商品 as item
+
+machine -> disp : 商品一覧表示
+disp -> itemlist : 商品一覧情報取得
+itemlist -> disp
+disp -> disp : 表示テキスト成型
+disp -> man : コンソール出力
+man --> disp
+disp --> machine : void
+
+newpage 操作選択画面表示
+
+machine -> disp : 操作選択画面表示
+disp -> man : 1:商品選択、2:入金、0:やめる
+man -> disp : 選択結果
+disp -> disp : 選択結果のENUM化
+disp -> machine : 選択結果(ENUM)
+
+newpage メイン処理
+
+loop 処理終了が選択されるまで
+
+machine -> machine : 商品一覧表示
+machine -> machine : 操作選択画面表示
+alt 商品選択の場合
+machine -> machine : 商品選択機能
+else 入金の場合
+machine -> machine : 入金機能
+else やめる場合
+machine -> machine : 処理終了
+end
+
+end
+
+newpage 入金機能
+
+machine -> disp : 金額入力要求画面表示
+disp -> man : 「金額を入力してください」
+man -> disp
+disp -> disp : 数値変換
+disp -> machine : 入金額
+machine -> coin : 入金処理
+coin --> machine
+machine -> coin : 合計金額取得
+coin -> machine : 合計金額
+machine -> disp : 合計金額表示
+disp -> man : 現在の入金額表示
+man --> disp
+disp --> machine
+
+newpage 商品選択機能
+
+machine -> disp : 商品選択要求画面表示
+disp -> man : 選択要求 0:やめる、1～商品番号
+man -> disp : 選択結果
+disp -> machine : 選択結果
+machine -> itemlist : 商品要求
+itemlist -> itemlist : 存在チェック
+
+alt 該当商品なし
+itemlist -> machine : 該当なし例外
+else 該当あり
+itemlist -> coin : 入金額判定(金額)
+coin -> coin : 合計金額取得
+coin -> itemlist : 判定結果
+
+alt 残不足
+itemlist -> machine : 残不足例外
+else 残額十分
+itemlist -> machine : 選択商品
+end
+
+end
+
+newpage 商品開封確認
+
+machine -> disp : 開封確認画面表示
+disp -> man : 開封確認
+man -> disp
+disp -> machine : 選択結果
+
+alt 開封する
+machine -> item : 開封メッセージ取得
+item -> machine : メッセージ
+machine -> disp : 開封メッセージ表示
+disp -> man
+man --> disp
+disp --> machine
+
+else 開封しない
+machine -> machine : なにもしない
+end
+
+
+@enduml
