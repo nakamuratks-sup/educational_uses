@@ -1,31 +1,11 @@
-package main.machine;
+package src.main.machine;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.goods.Goods;
+import src.main.goods.Goods;
 
 public class VendMachineImpl implements VendMachine {
-	private Integer coin=0;
-
-
-
-	@Override
-	public void inputCoin(Integer coin) {
-		this.coin += coin;
-
-	}
-
-	@Override
-	public Integer getTotalCoin() {
-		return this.coin;
-	}
-
-	@Override
-	public void RejectCoin() {
-		this.coin = 0;
-
-	}
 
 	@Override
 	public List<Goods> getGoodsList() {
@@ -62,6 +42,12 @@ public class VendMachineImpl implements VendMachine {
 			@Override
 			public String getGoodsInfo() {
 				return "| " + 1 + " | " + price + " | " + name + " |";
+			}
+
+			@Override
+			public String open() {
+				// TODO 自動生成されたメソッド・スタブ
+				return "なかなか美味しい";
 			}
 		};
 	}

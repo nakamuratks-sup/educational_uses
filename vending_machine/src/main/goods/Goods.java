@@ -1,4 +1,4 @@
-package main.goods;
+package src.main.goods;
 
 /**
  * 商品インタフェース
@@ -25,4 +25,9 @@ public interface Goods {
 	 * @return
 	 */
 	public String getGoodsInfo();
+
+	/**
+	 * @return 開封時メッセージ
+	 */
+	String open();
 }

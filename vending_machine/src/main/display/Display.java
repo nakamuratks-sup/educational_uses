@@ -1,11 +1,11 @@
-package main.display;
+package src.main.display;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import main.goods.Goods;
+import src.main.goods.Goods;
 
 public class Display {
 

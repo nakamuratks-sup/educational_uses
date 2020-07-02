@@ -1,29 +1,10 @@
-package main.machine;
+package src.main.machine;
 
 import java.util.List;
 
-import main.goods.Goods;
+import src.main.goods.Goods;
 
 public interface VendMachine {
-
-	// 入金関連
-	/**
-	 * 入金処理
-	 * @param coin
-	 */
-	public void inputCoin(Integer coin);
-
-	/**
-	 * 現在の入金額を返す
-	 * @return
-	 */
-	public Integer getTotalCoin();
-
-	/**
-	 * 金額リセット
-	 */
-	public void RejectCoin();
-
 
 	// 商品関連
 	/**

@@ -1,6 +1,10 @@
-package main;
+package src.main;
 
-import main.machine.MachineMain;
+import src.main.machine.CoinControl;
+import src.main.machine.CoinControlImpl;
+import src.main.machine.MachineMain;
+import src.main.machine.VendMachine;
+import src.main.machine.VendMachineImpl;
 
 public class Main {
 
@@ -10,7 +14,12 @@ public class Main {
 	}
 
 	private void prgMain() {
+		VendMachine vmachine = new VendMachineImpl();
+		CoinControl cctrl = new CoinControlImpl();
 		MachineMain machine = new MachineMain();
+
+		machine.setCoinctrl(cctrl);
+		machine.setVenmachine(vmachine);
 
 		System.out.println("### 自販機プログラム開始 ###");
 		machine.menuMain();

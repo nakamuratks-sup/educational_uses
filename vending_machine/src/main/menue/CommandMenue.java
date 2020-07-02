@@ -1,4 +1,4 @@
-package main.menue;
+package src.main.menue;
 
 public enum CommandMenue {
 	Exit,

@@ -1,12 +1,11 @@
-package main.machine;
+package src.main.machine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import main.display.Display;
-import main.goods.Goods;
-import main.menue.CommandMenue;
+import src.main.goods.Goods;
+import src.main.menue.CommandMenue;
 
 /**
  * 自販機本体
@@ -15,13 +14,21 @@ import main.menue.CommandMenue;
  */
 public class MachineMain {
 
-	private Display display;
 	private VendMachine venmachine;
+	private CoinControl coinctrl;
 
 	public MachineMain() {
-		// TODO 自動生成されたコンストラクター・スタブ
-		display = new Display();
-		venmachine = new VendMachineImpl();
+
+	}
+
+
+	public void setVenmachine(VendMachine venmachine) {
+		this.venmachine = venmachine;
+	}
+
+
+	public void setCoinctrl(CoinControl coinctrl) {
+		this.coinctrl = coinctrl;
 	}
 
 
@@ -48,8 +55,20 @@ public class MachineMain {
 
 	}
 
+	/**
+	 * 操作選択
+	 * @return
+	 */
 	private CommandMenue command() {
-		System.out.println();
+		// 商品一覧表示
+		System.out.println("################");
+//		System.out.println("ここに商品を表示");
+		for(Goods goods: venmachine.getGoodsList()) {
+			System.out.println(goods.getGoodsInfo());
+		}
+		System.out.println("################");
+		System.out.println("");
+
 		System.out.println("### 操作を選んでください ###");
 		System.out.println("0:終了する");
 		System.out.println("1:入金する");
@@ -75,8 +94,11 @@ public class MachineMain {
 		}
 	}
 
+	/**
+	 * 入金処理
+	 */
 	private void coinCommand() {
-		System.out.println();
+		System.out.println("");
 		System.out.println("### 入金額を入れてください ###");
 		System.out.print(">");
 
@@ -89,18 +111,46 @@ public class MachineMain {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 			reslt=0;
+		}catch(NumberFormatException ne) {
+			System.out.println("### 数字を入力してください！ ###");
+			reslt=0;
 		}
-		venmachine.inputCoin(reslt);
+		coinctrl.inputCoin(reslt);
+
+		System.out.println("現在の入金額は" + coinctrl.getTotalCoin() + "円です");
+
 	}
 
+	/**
+	 * 商品選択
+	 */
 	private void choiceItem() {
-		display.outputGoods(venmachine.getGoodsList());
-		Integer item = display.inputGoods();
+		Integer item;
+
+		System.out.println("### 商品を選んでください ###");
+		System.out.print(">");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			String str = br.readLine();
+			item = Integer.valueOf(str);
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			item = 0;
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			item = 0;
+		}
+
 		Goods goods = venmachine.getGoods(item);
-		System.out.println();
-		System.out.println("選んだ商品はこれです:" + goods.getName());
-		System.out.println("おいしい");
-		System.out.println();
+		if(coinctrl.isBuy(goods)) {
+			System.out.println("選んだ商品はこれです:" + goods.getName());
+			System.out.println("中身は？:" + goods.open());
+		}else {
+			System.out.println("金額が不足しています");
+		}
+
+
 	}
 
 }
